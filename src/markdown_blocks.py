@@ -42,7 +42,7 @@ def block_to_block_type(block: str) -> BlockType:
     
     return BlockType.PARAGRAPH
 
-def markdown_to_blocks(markdown: str):
+def markdown_to_blocks(markdown: str) -> list[str]:
     blocks = []
     for block in markdown.split("\n\n"):
         stripped_block = block.strip()
@@ -50,10 +50,12 @@ def markdown_to_blocks(markdown: str):
         if stripped_block:
             blocks.append(stripped_block)
 
-    for i, block in enumerate(blocks):
+    for i in range(len(blocks)):
+        block = blocks[i]
         lines = block.split("\n")
 
-        for j, line in enumerate(lines):
+        for j in range(len(lines)):
+            line = lines[j]
             lines[j] = line.strip()
 
         blocks[i] = "\n".join(lines)

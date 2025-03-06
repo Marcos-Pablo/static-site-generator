@@ -1,22 +1,5 @@
-from functools import reduce
 from textnode import TextNode, TextType
 import re
-
-def markdown_to_blocks(markdown: str):
-    blocks = []
-    def strip_and_filter_out_empty_lines(lines, line):
-        stripped_line = line.strip()
-
-        if stripped_line != "":
-            return lines + [stripped_line]
-        else:
-            return lines
-
-    for block in markdown.split("\n\n"):
-        lines = block.split("\n")
-        stripped_lines_non_empty_lines = reduce(strip_and_filter_out_empty_lines, lines, [])
-        blocks.append("\n".join(stripped_lines_non_empty_lines))
-    return blocks
 
 def text_to_textnodes(text: str) -> list[TextNode]:
     nodes = [TextNode(text, TextType.TEXT)]
