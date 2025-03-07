@@ -12,8 +12,7 @@ def copy_from_static_to_public():
 
     shutil.rmtree("./public/")
     os.mkdir("./public/")
-    # copy_dir("./static/", "./public/")
-
+    copy_dir("./static/", "./public/")
 
 def main():
     copy_from_static_to_public()
