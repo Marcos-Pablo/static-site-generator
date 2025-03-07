@@ -1,10 +1,8 @@
 from enum import Enum
 
 from htmlnode import HTMLNode
-import htmlnode
 from inline_markdown import text_to_textnodes
 from parentnode import ParentNode
-import parentnode
 from textnode import TextNode, TextType, text_node_to_html_node
 
 class BlockType(Enum):
