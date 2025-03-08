@@ -13,6 +13,14 @@ class BlockType(Enum):
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
 
+def extract_title(markdown: str):
+    lines = markdown.split("\n")
+    title = lines[0]
+    if not title.startswith("# "):
+        raise ValueError("Markdowns must start with a h1 header")
+
+    return title.lstrip("#").strip()
+
 def text_to_children(text: str) -> list[HTMLNode]:
     text_nodes = text_to_textnodes(text)
     children = []
