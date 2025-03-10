@@ -80,7 +80,6 @@ def block_to_html_node(block: str) -> HTMLNode:
 
             return ParentNode("ol", li_nodes)
 
-
 def markdown_to_html_node(markdown: str) -> HTMLNode:
     blocks = markdown_to_blocks(markdown)
     children = []
@@ -95,34 +94,29 @@ def block_to_block_type(block: str) -> BlockType:
     if block[:3] == "```" and block[-3:] == "```":
         return BlockType.CODE
 
-    split_block = block.split(" ", 1)
-    if len(split_block) == 2 and len(split_block[0]) <= 6 and split_block[0] == "#" * len(split_block[0]):
+    if block.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### ")):
         return BlockType.HEADING
-
-    is_quote = True
-    is_unordered_list = True
-    is_ordered_list = True
-    lines = block.split("\n")
-    counter = 1
-    for line in lines:
-        if not line.startswith(">"):
-            is_quote = False
-        if not line.startswith("- "):
-            is_unordered_list = False
-        if not line.startswith(f"{counter}. "):
-            is_ordered_list = False
-
-        counter += 1
-
-    if is_quote:
-        return BlockType.QUOTE
     
-    if is_unordered_list:
+    if block.startswith(">"):
+        for line in block.split("\n"):
+            if not line.startswith(">"):
+                return BlockType.PARAGRAPH
+        return BlockType.QUOTE
+
+    if block.startswith("- "):
+        for line in block.split("\n"):
+            if not line.startswith("- "):
+                return BlockType.PARAGRAPH
         return BlockType.UNORDERED_LIST
     
-    if is_ordered_list:
+    if block.startswith("1. "):
+        counter = 1
+        for line in block.split("\n"):
+            if not line.startswith(f"{counter}. "):
+                return BlockType.PARAGRAPH
+            counter += 1
         return BlockType.ORDERED_LIST
-    
+
     return BlockType.PARAGRAPH
 
 def markdown_to_blocks(markdown: str) -> list[str]:
@@ -142,5 +136,4 @@ def markdown_to_blocks(markdown: str) -> list[str]:
             lines[j] = line.strip()
 
         blocks[i] = "\n".join(lines)
-
     return blocks
